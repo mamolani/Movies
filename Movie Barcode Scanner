@@ -15,31 +15,38 @@
   <div class="result" id="result">Scan a barcode...</div>
 
   <script>
-    const WEB_APP_URL = "YOUR_DEPLOYED_WEB_APP_URL";
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwKP2F2CGJ14isrddDkEVWialddUfqa4Ore8HOtykxJCD0jU9f-yblKdsz0x-hW1MxeMw/exec";
 
-    function sendBarcodeToSheet(barcode) {
-      document.getElementById("result").innerText = "Looking up " + barcode + "...";
-      fetch(WEB_APP_URL, {
-        method: "POST",
-        body: JSON.stringify({ barcode }),
-        headers: { "Content-Type": "application/json" },
-      })
-      .then(r => r.text())
-      .then(txt => document.getElementById("result").innerText = txt)
-      .catch(err => document.getElementById("result").innerText = "Error: " + err);
-    }
+  function sendBarcodeToSheet(barcode) {
+    const result = document.getElementById("result");
+    result.innerText = "📡 Sending barcode " + barcode + "...";
 
-    function onScanSuccess(decodedText) {
-      document.getElementById("result").innerText = "Scanned: " + decodedText;
-      sendBarcodeToSheet(decodedText);
-    }
+    fetch(WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify({ barcode }),
+      headers: { "Content-Type": "application/json" },
+    })
+    .then(r => r.text())
+    .then(txt => {
+      result.innerText = "✅ Server response: " + txt;
+    })
+    .catch(err => {
+      result.innerText = "❌ Error sending to script: " + err;
+    });
+  }
 
-    const html5QrCode = new Html5Qrcode("reader");
-    html5QrCode.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: 250 },
-      onScanSuccess
-    );
-  </script>
+  function onScanSuccess(decodedText) {
+    document.getElementById("result").innerText = "🎯 Scanned: " + decodedText;
+    sendBarcodeToSheet(decodedText);
+  }
+
+  const html5QrCode = new Html5Qrcode("reader");
+  html5QrCode.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+    onScanSuccess
+  );
+</script>
+
 </body>
 </html>
