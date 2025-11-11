@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Movie Barcode Scanner</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>🎬 Movie Barcode Scanner</h1>
 
-  <div id="scanner">
-    <video id="preview"></video>
-  </div>
-
+  <video id="preview"></video>
   <div id="output">Scan a barcode to begin...</div>
 
   <div id="movie-info" style="display:none;">
@@ -20,12 +17,10 @@
     <p id="movie-year"></p>
     <p id="movie-director"></p>
     <p id="movie-genre"></p>
-    <img id="movie-poster" src="" alt="Movie Poster" />
+    <img id="movie-poster" src="" alt="Movie Poster"/>
   </div>
 
-  <!-- QuaggaJS for barcode scanning -->
   <script src="https://unpkg.com/@ericblade/quagga2/dist/quagga.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
-
