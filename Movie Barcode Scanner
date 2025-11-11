@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🎬 Movie Barcode Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 20px; }
+    #reader { width: 300px; margin: auto; }
+    .result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>🎥 Movie Barcode Scanner</h2>
+  <div id="reader"></div>
+  <div class="result" id="result">Scan a barcode...</div>
+
+  <script>
+    const WEB_APP_URL = "YOUR_DEPLOYED_WEB_APP_URL";
+
+    function sendBarcodeToSheet(barcode) {
+      document.getElementById("result").innerText = "Looking up " + barcode + "...";
+      fetch(WEB_APP_URL, {
+        method: "POST",
+        body: JSON.stringify({ barcode }),
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(r => r.text())
+      .then(txt => document.getElementById("result").innerText = txt)
+      .catch(err => document.getElementById("result").innerText = "Error: " + err);
+    }
+
+    function onScanSuccess(decodedText) {
+      document.getElementById("result").innerText = "Scanned: " + decodedText;
+      sendBarcodeToSheet(decodedText);
+    }
+
+    const html5QrCode = new Html5Qrcode("reader");
+    html5QrCode.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+      onScanSuccess
+    );
+  </script>
+</body>
+</html>
