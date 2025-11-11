@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx5nheZyGgL1QHyxj7Z7XP9hphTH_1DzuDupOvqnV8H26_o1szz9MxeYsi07H8zC0UXBw/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRIVUhDuMhfya-jZSvXmr0KlWMrsGh9W1r-W0qdxWeT3yXcqpjqGerCfM5i-FulqjEkQ/exec";
 
 const output = document.getElementById("output");
 const movieInfo = document.getElementById("movie-info");
