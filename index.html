@@ -4,66 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Movie Barcode Scanner</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; text-align: center; }
-    video { width: 90%; max-width: 400px; border: 2px solid #ccc; border-radius: 10px; }
-    #output { margin-top: 20px; font-size: 1.2em; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <h1>🎬 Movie Barcode Scanner</h1>
-  <video id="preview"></video>
+
+  <div id="scanner">
+    <video id="preview"></video>
+  </div>
+
   <div id="output">Scan a barcode to begin...</div>
 
-  <!-- Include the QuaggaJS library for barcode scanning -->
+  <div id="movie-info" style="display:none;">
+    <h2 id="movie-title"></h2>
+    <p id="movie-year"></p>
+    <p id="movie-director"></p>
+    <p id="movie-genre"></p>
+    <img id="movie-poster" src="" alt="Movie Poster" />
+  </div>
+
+  <!-- QuaggaJS for barcode scanning -->
   <script src="https://unpkg.com/@ericblade/quagga2/dist/quagga.min.js"></script>
-
-  <script>
-    // 🔗 Your Google Apps Script Web App URL (must end with /exec)
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx5nheZyGgL1QHyxj7Z7XP9hphTH_1DzuDupOvqnV8H26_o1szz9MxeYsi07H8zC0UXBw/exec";
-
-    const output = document.getElementById('output');
-
-    // 📷 Initialize barcode scanning
-    Quagga.init({
-      inputStream: {
-        type: "LiveStream",
-        target: document.querySelector('#preview'),
-        constraints: { facingMode: "environment" }
-      },
-      decoder: { readers: ["ean_reader", "upc_reader", "upc_e_reader"] }
-    }, err => {
-      if (err) { output.textContent = "Camera error: " + err; return; }
-      Quagga.start();
-    });
-
-    // 📡 Handle barcode detected event
-    Quagga.onDetected(data => {
-      const barcode = data.codeResult.code;
-      output.textContent = `📦 Scanned: ${barcode}`;
-      sendBarcode(barcode);
-    });
-
-    // 📨 Function that sends barcode to your Google Apps Script
-    function sendBarcode(barcode) {
-      output.textContent = "📡 Sending barcode...";
-      fetch(WEB_APP_URL, {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ barcode })
-      })
-      .then(res => res.text())
-      .then(text => {
-        output.textContent = text; // show backend response
-      })
-      .catch(err => {
-        console.error("Error sending to script:", err);
-        output.textContent = "❌ Error sending to Google Script: " + err.message;
-      });
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
 
