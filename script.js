@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwaDc6RsCoBpXhlVblOHSmYYmh5cThZ1XOSDaMsur1AM7dhwmx16rHEYtxsjMHpgHrYtA/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxlXlojyEtfy8XXBgvv5b7GBZFjjOy6Ioh9koguOA7Bm46b1zphGcfglXoSpB2kCgA3/exec"; // Replace with your /exec URL
 
 const output = document.getElementById("output");
 const movieInfo = document.getElementById("movie-info");
@@ -15,20 +15,18 @@ Quagga.init({
     target: document.querySelector("#preview"),
     constraints: { facingMode: "environment" }
   },
-  decoder: { readers: ["ean_reader", "upc_reader", "upc_e_reader"] }
+  decoder: { readers: ["ean_reader","upc_reader","upc_e_reader"] }
 }, err => {
   if (err) { output.textContent = "Camera error: " + err; return; }
   Quagga.start();
 });
 
-// On barcode detected
 Quagga.onDetected(data => {
   const barcode = data.codeResult.code;
   output.textContent = "📦 Scanned: " + barcode;
   sendBarcode(barcode);
 });
 
-// Send barcode to Google Apps Script
 function sendBarcode(barcode) {
   output.textContent = "📡 Sending barcode...";
   fetch(WEB_APP_URL, {
@@ -39,7 +37,6 @@ function sendBarcode(barcode) {
   })
   .then(res => res.json())
   .then(data => {
-    // data should include movie info from your backend (adjust your Apps Script if needed)
     if (!data || !data.Title) {
       output.textContent = "❌ Movie not found";
       movieInfo.style.display = "none";
